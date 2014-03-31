@@ -76,6 +76,18 @@ class DnsMadeEasy
     self.class.get("/dns/managed/#{id}/records")
   end
   
+  def find_record_id(domain_name, name, type)
+    records = self.records_for(domain_name)
+    
+    ids = records['data'].collect do |r|
+      if r['name'] == name && r['type'] == type
+        r['id']
+      end
+    end.compact
+    
+    ids
+  end
+  
   def delete_records(domain_name, ids = [])
     id = get_id_by_domain(domain_name)
     
