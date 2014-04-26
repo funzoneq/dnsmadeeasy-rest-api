@@ -1,4 +1,4 @@
-require './dnsmadeeasyapi.rb'
+require 'dnsmadeeasyapi'
 require 'pp'
 
 config = YAML.load_file File.expand_path 'config.yml'
