@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name          = 'dnsmadeeasyapi'
-  s.version       = '0.0.1'
+  s.version       = '0.0.2'
   s.authors       = 'Arnoud Vermeer'
   s.email         = 'a.vermeer@freshway.biz'
   s.license       = 'GPL-2'
