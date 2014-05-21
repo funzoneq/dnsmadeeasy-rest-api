@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    dnsmadeeasyapi-good (1.0.0)
+    dnsmadeeasyapi-good (1.0.1)
 
 GEM
   remote: https://rubygems.org/

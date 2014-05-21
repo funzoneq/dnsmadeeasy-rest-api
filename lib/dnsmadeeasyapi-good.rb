@@ -77,7 +77,7 @@ class Dnsmadeeasyapi
 
   def create_record(domain_name, name, type, value, options = {})
     body = {"name" => name, "type" => type, "value" => value, "ttl" => 3600, "gtdLocation" => "DEFAULT"}
-    post "/dns/managed/#{get_id_by_domain(domain_name)}/records/", options.merge(body)
+    post "/dns/managed/#{get_id_by_domain(domain_name)}/records/", body.merge(options)
   end
 
   def create_a_record(domain_name, name, value, options = {})
@@ -132,7 +132,7 @@ class Dnsmadeeasyapi
 
   def update_record(domain, record_id, name, type, value, options = {})
     body = { "name" => name, "type" => type, "value" => value, "ttl" => 3600, "gtdLocation" => "DEFAULT", "id" => record_id}
-    put "/dns/managed/#{get_id_by_domain(domain)}/records/#{record_id}/", options.merge(body)
+    put "/dns/managed/#{get_id_by_domain(domain)}/records/#{record_id}/", body.merge(options)
   end
 
   private

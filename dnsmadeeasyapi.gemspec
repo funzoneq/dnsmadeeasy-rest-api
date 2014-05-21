@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name          = 'dnsmadeeasyapi-good'
-  s.version       = '1.0.0'
+  s.version       = '1.0.1'
   s.authors       = ['Paul Henry', 'James Hart']
   s.email         = 'ops@wanelo.com'
   s.license       = 'Apache'
