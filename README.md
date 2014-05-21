@@ -1,11 +1,7 @@
-Dns Made Easy Api
+Dns Made Easy Api, but better.
 ==============
 
-DNS Made Easy V2.0 REST API client for Ruby
 
-## Usage
-
-See [generatedns.rb](https://github.com/funzoneq/dnsmadeeasyapi/blob/master/generatedns.rb) for usage.
 
 ## Contributing
 

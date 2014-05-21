@@ -1,5 +1,5 @@
 require 'spec_helper'
-require_relative '../../lib/dnsmadeeasyapi'
+require_relative '../../lib/dnsmadeeasyapi-good'
 
 describe Dnsmadeeasyapi do
   let(:api_key) { 'soooo secret' }
