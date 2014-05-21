@@ -1,6 +1,8 @@
 require 'time'
 require 'openssl'
 require 'json'
+require 'uri'
+require 'net/http'
 
 class Dnsmadeeasyapi
 
