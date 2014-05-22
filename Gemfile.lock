@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    dnsmadeeasyapi-good (1.0.1)
+    dnsmadeeasy-rest-api (1.0.1)
 
 GEM
   remote: https://rubygems.org/
@@ -27,6 +27,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  dnsmadeeasyapi-good!
+  dnsmadeeasy-rest-api!
   rspec
   webmock

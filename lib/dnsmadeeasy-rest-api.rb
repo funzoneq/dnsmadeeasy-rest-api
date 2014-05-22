@@ -4,7 +4,7 @@ require 'json'
 require 'uri'
 require 'net/http'
 
-class Dnsmadeeasyapi
+class DnsMadeEasy
 
   attr_accessor :base_uri
 

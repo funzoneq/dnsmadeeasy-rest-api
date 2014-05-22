@@ -1,7 +1,7 @@
 require 'spec_helper'
-require_relative '../../lib/dnsmadeeasyapi-good'
+require_relative '../../lib/dnsmadeeasy-rest-api'
 
-describe Dnsmadeeasyapi do
+describe DnsMadeEasy do
   let(:api_key) { 'soooo secret' }
   let(:secret_key) { 'soooo secret' }
   let(:request_headers) do
@@ -11,7 +11,7 @@ describe Dnsmadeeasyapi do
       'X-Dnsme-Requestdate' => 'Wed, 21 May 2014 18:08:37 GMT'}
   end
 
-  subject { Dnsmadeeasyapi.new(api_key, secret_key) }
+  subject { DnsMadeEasy.new(api_key, secret_key) }
 
   before do
     Time.stub(:now).and_return(Time.parse('Wed, 21 May 2014 18:08:37 GMT'))
