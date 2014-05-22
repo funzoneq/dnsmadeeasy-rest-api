@@ -75,7 +75,7 @@ To retrieve all records for a given domain name:
 
 ```ruby
 api.records_for('hello.wanelo.com')
-``
+```
 
 To find the record id for a given domain, name, and type:
 
