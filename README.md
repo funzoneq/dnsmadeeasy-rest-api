@@ -1,4 +1,4 @@
-Dns Made Easy Api, but better.
+Dns Made Easy Api
 ==============
 
 ## Installation
