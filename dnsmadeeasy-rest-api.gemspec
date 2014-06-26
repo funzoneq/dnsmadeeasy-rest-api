@@ -1,12 +1,12 @@
 Gem::Specification.new do |s|
   s.name          = 'dnsmadeeasy-rest-api'
   s.version       = '1.0.1'
-  s.authors       = ['Paul Henry', 'James Hart']
-  s.email         = 'ops@wanelo.com'
+  s.authors       = ['Arnoud Vermeer', 'Paul Henry', 'James Hart']
+  s.email         = ['a.vermeer@freshway.biz', 'ops@wanelo.com']
   s.license       = 'Apache'
   s.summary       = 'DNS Made Easy V2.0 REST API client for Ruby'
   s.description   = 'DNS Made Easy V2.0 REST API client for Ruby, but better. With tests and no dependencies.'
-  s.homepage      = 'https://github.com/wanelo/dnsmadeeasy-rest-api'
+  s.homepage      = 'https://github.com/funzoneq/dnsmadeeasy-rest-api'
 
   s.files         = `git ls-files`.split("\n")
 
