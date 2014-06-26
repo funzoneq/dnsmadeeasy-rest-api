@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name          = 'dnsmadeeasy-rest-api'
-  s.version       = '1.0.1'
+  s.version       = '1.0.2'
   s.authors       = ['Arnoud Vermeer', 'Paul Henry', 'James Hart']
   s.email         = ['a.vermeer@freshway.biz', 'ops@wanelo.com']
   s.license       = 'Apache'
