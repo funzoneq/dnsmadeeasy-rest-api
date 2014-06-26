@@ -44,29 +44,29 @@ api.domains
 To retreive the id of a domain by the domain name:
 
 ```ruby
-api.get_id_by_domain('hello.wanelo.com')
+api.get_id_by_domain('hello.example.com')
 ```
 
 To retrieve the full domain record by domain name:
 
 ```ruby
-api.domain('hello.wanelo.com')
+api.domain('hello.example.com')
 ```
 
 To create a domain:
 
 ```ruby
-api.create_domain('hello.wanelo.com')
+api.create_domain('hello.example.com')
 
 # Multiple domains can be created by:
 
-api.create_domains(['hello.wanelo.com', 'sup.wanelo.com'])
+api.create_domains(['hello.example.com', 'sup.example.com'])
 ```
 
 To delete a domain:
 
 ```ruby
-api.delete_domain('hello.wanelo.com')
+api.delete_domain('hello.example.com')
 ```
 
 ### Managing Records
@@ -74,60 +74,60 @@ api.delete_domain('hello.wanelo.com')
 To retrieve all records for a given domain name:
 
 ```ruby
-api.records_for('hello.wanelo.com')
+api.records_for('hello.example.com')
 ```
 
 To find the record id for a given domain, name, and type:
 
-This finds the id of the A record 'woah.hello.wanelo.com'.
+This finds the id of the A record 'woah.hello.example.com'.
 
 ```ruby
-api.find_record_id('hello.wanelo.com', 'woah', 'A')
+api.find_record_id('hello.example.com', 'woah', 'A')
 ```
 
 To delete a record by domain name and record id (the record id can be retrieved from `find_record_id`:
 
 ```ruby
-api.delete_record('hello.wanelo.com', 123)
+api.delete_record('hello.example.com', 123)
 
 # To delete multiple records:
 
-api.delete_records('hello.wanelo.com', [123, 143])
+api.delete_records('hello.example.com', [123, 143])
 ```
 
 To create a record:
 
 ```ruby
-api.create_record('hello.wanelo.com', 'woah', 'A', '127.0.0.1', { 'ttl' => '60' })
+api.create_record('hello.example.com', 'woah', 'A', '127.0.0.1', { 'ttl' => '60' })
 
-api.create_a_record('hello.wanelo.com', 'woah', '127.0.0.1', {})
+api.create_a_record('hello.example.com', 'woah', '127.0.0.1', {})
 
-api.create_aaaa_record('hello.wanelo.com', 'woah', '127.0.0.1', {})
+api.create_aaaa_record('hello.example.com', 'woah', '127.0.0.1', {})
 
-api.create_ptr_record('hello.wanelo.com', 'woah', '127.0.0.1', {})
+api.create_ptr_record('hello.example.com', 'woah', '127.0.0.1', {})
 
-api.create_txt_record('hello.wanelo.com', 'woah', '127.0.0.1', {})
+api.create_txt_record('hello.example.com', 'woah', '127.0.0.1', {})
 
-api.create_cname_record('hello.wanelo.com', 'woah', '127.0.0.1', {})
+api.create_cname_record('hello.example.com', 'woah', '127.0.0.1', {})
 
-api.create_ns_record('hello.wanelo.com', 'woah', '127.0.0.1', {})
+api.create_ns_record('hello.example.com', 'woah', '127.0.0.1', {})
 
-api.create_spf_record('hello.wanelo.com', 'woah', '127.0.0.1', {})
+api.create_spf_record('hello.example.com', 'woah', '127.0.0.1', {})
 
 # Arguments are: domain_name, name, priority, value, options = {}
-api.create_mx_record('hello.wanelo.com', 'woah', 5, '127.0.0.1', {})
+api.create_mx_record('hello.example.com', 'woah', 5, '127.0.0.1', {})
 
 # Arguments are: domain_name, name, priority, weight, port, value, options = {}
-api.create_srv_record('hello.wanelo.com', 'woah', 1, 5, 80, '127.0.0.1', {})
+api.create_srv_record('hello.example.com', 'woah', 1, 5, 80, '127.0.0.1', {})
 
 # Arguments are: domain_name, name, value, redirectType, description, keywords, title, options = {}
-api.create_httpred_record('hello.wanelo.com', 'woah', '127.0.0.1', 'STANDARD - 302', 'a description', 'keywords', 'a title', {})
+api.create_httpred_record('hello.example.com', 'woah', '127.0.0.1', 'STANDARD - 302', 'a description', 'keywords', 'a title', {})
 ```
 
 To update a record:
 
 ```ruby
-api.update_record('hello.wanelo.com', 123, 'woah', 'A', '127.0.1.1', { 'ttl' => '60' })
+api.update_record('hello.example.com', 123, 'woah', 'A', '127.0.1.1', { 'ttl' => '60' })
 ```
 
 ## Contributing
