@@ -1,4 +1,4 @@
-Dns Made Easy Api
+Dns Made Easy Rest Api
 ==============
 
 ## Installation
