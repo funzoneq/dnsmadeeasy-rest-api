@@ -245,4 +245,11 @@ describe DnsMadeEasy do
       expect(subject.update_record('something.wanelo.com', 21, 'mail', 'A', '1.1.1.1', options = {})).to eq({})
     end
   end
+
+  describe "#request" do
+    it "handles an empty string response" do
+      Net::HTTP.any_instance.stub(:request).and_return(double(body: ""))
+      expect(subject.send(:request, "/some_path") { {} }).to eq({})
+    end
+  end
 end

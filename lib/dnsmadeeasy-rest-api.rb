@@ -180,8 +180,9 @@ class DnsMadeEasy
     end
 
     response = http.request(request)
+    unparsed_json = response.body == "" ? "{}" : response.body
 
-    JSON.parse(response.body)
+    JSON.parse(unparsed_json)
   end
 
   def request_headers
