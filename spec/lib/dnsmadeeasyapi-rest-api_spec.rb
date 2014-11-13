@@ -111,6 +111,25 @@ describe DnsMadeEasy do
     end
   end
 
+  describe '#find' do
+    let(:records_for_response) do
+      {
+        'data' => [
+          { 'name' => 'demo', 'type' => 'A', 'id' => 123},
+          { 'name' => 'demo', 'type' => 'A', 'id' => 143}
+        ]
+      }
+    end
+
+    before do
+      subject.stub(:records_for).with('something.wanelo.com').and_return(records_for_response)
+    end
+
+    it 'finds the first record that matches name and type' do
+      expect(subject.find('something.wanelo.com', 'demo', 'A')).to eq({ 'name' => 'demo', 'type' => 'A', 'id' => 123})
+    end
+  end
+
   describe '#find_record_id' do
     let(:records_for_response) do
       {

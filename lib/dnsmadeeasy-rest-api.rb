@@ -58,6 +58,11 @@ class DnsMadeEasy
     get "/dns/managed/#{get_id_by_domain(domain_name)}/records"
   end
 
+  def find(domain_name, name, type)
+    records = records_for(domain_name)
+    records['data'].detect { |r| r['name'] == name && r['type'] == type }
+  end
+
   def find_record_id(domain_name, name, type)
     records = records_for(domain_name)
 
