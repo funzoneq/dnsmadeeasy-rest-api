@@ -261,7 +261,7 @@ describe DnsMadeEasy do
         to_return(:status => 200, :body => response, :headers => {})
 
 
-      expect(subject.update_record('something.wanelo.com', 21, 'mail', 'A', '1.1.1.1', options = {})).to eq({})
+      expect(subject.update_record('something.wanelo.com', 21, 'mail', 'A', '1.1.1.1', {})).to eq({})
     end
   end
 
