@@ -93,6 +93,10 @@ api.delete_record('hello.example.com', 123)
 # To delete multiple records:
 
 api.delete_records('hello.example.com', [123, 143])
+
+# To delete all records in the domain:
+
+api.delete_all_records('hello.example.com')
 ```
 
 To create a record:
