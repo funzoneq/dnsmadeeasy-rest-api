@@ -70,14 +70,20 @@ class DnsMadeEasy
                    .map    { |r| r['id'] }
   end
 
-  def delete_records(domain_name, ids = [])
-    id = get_id_by_domain(domain_name)
-
-    delete "/dns/managed/#{id}/records/", ids
-  end
-
   def delete_record(domain_name, record_id)
     delete "/dns/managed/#{get_id_by_domain(domain_name)}/records/#{record_id}/"
+  end
+
+  def delete_records(domain_name, ids = [])
+    return if ids.empty?
+    domain_id = get_id_by_domain(domain_name)
+
+    delete "/dns/managed/#{domain_id}/records?ids=#{ids.join(',')}"
+  end
+
+  def delete_all_records(domain_name)
+    domain_id = get_id_by_domain(domain_name)
+    delete "/dns/managed/#{domain_id}/records"
   end
 
   def create_record(domain_name, name, type, value, options = {})
@@ -144,13 +150,13 @@ class DnsMadeEasy
 
   def get(path)
     request(path) do |uri|
-      Net::HTTP::Get.new(uri.path)
+      Net::HTTP::Get.new(uri)
     end
   end
 
   def delete(path, body = nil)
     request(path) do |uri|
-      req = Net::HTTP::Delete.new(uri.path)
+      req = Net::HTTP::Delete.new(uri)
       req.body = body.to_json if body
       req
     end
@@ -158,7 +164,7 @@ class DnsMadeEasy
 
   def put(path, body = nil)
     request(path) do |uri|
-      req = Net::HTTP::Put.new(uri.path)
+      req = Net::HTTP::Put.new(uri)
       req.body = body.to_json if body
       req
     end
@@ -166,7 +172,7 @@ class DnsMadeEasy
 
   def post(path, body)
     request(path) do |uri|
-      req = Net::HTTP::Post.new(uri.path)
+      req = Net::HTTP::Post.new(uri)
       req.body = body.to_json
       req
     end
