@@ -266,9 +266,34 @@ describe DnsMadeEasy do
   end
 
   describe "#request" do
-    it "handles an empty string response" do
-      Net::HTTP.any_instance.stub(:request).and_return(double(body: ""))
-      expect(subject.send(:request, "/some_path") { {} }).to eq({})
+    before do
+      stub_request(:get, "https://api.dnsmadeeasy.com/V2.0/some_path").
+        with(headers: request_headers).
+        to_return(status: status, body: body, headers: {})
+    end
+
+    let(:response) do
+      subject.send(:request, "/some_path") { |uri|
+        Net::HTTP::Get.new(uri.path)
+      }
+    end
+
+    context "with a 2xx, empty-string response" do
+      let(:status) { 200 }
+      let(:body) { "" }
+
+      it "handles gracefully" do
+        expect(response).to eq({})
+      end
+    end
+
+    context "with a non-2xx response" do
+      let(:status) { 400 }
+      let(:body) { "<xml> JSON.parse won't like this very much </xml>" }
+
+      it "raises a Net::HTTPServerException instead of a JSON::ParserError" do
+        expect { response }.to raise_exception(Net::HTTPServerException)
+      end
     end
   end
 end
