@@ -8,12 +8,13 @@ class DnsMadeEasy
 
   attr_accessor :base_uri
 
-  def initialize (api_key, api_secret, sandbox = false)
+  def initialize (api_key, api_secret, sandbox = false, options = {})
     raise "api_key is undefined" unless api_key
     raise "api_secret is undefined" unless api_secret
 
     @api_key = api_key
     @api_secret = api_secret
+    @options = options
 
     if sandbox
       self.base_uri = 'https://api.sandbox.dnsmadeeasy.com/V2.0'
@@ -177,6 +178,8 @@ class DnsMadeEasy
 
     http = Net::HTTP.new(uri.host, uri.port)
     http.use_ssl = true
+    http.open_timeout = @options[:open_timeout] if @options.key?(:open_timeout)
+    http.read_timeout = @options[:read_timeout] if @options.key?(:read_timeout)
 
     request = yield(uri)
 
