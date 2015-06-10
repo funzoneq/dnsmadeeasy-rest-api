@@ -180,7 +180,8 @@ class DnsMadeEasy
     http.use_ssl = true
     http.open_timeout = @options[:open_timeout] if @options.key?(:open_timeout)
     http.read_timeout = @options[:read_timeout] if @options.key?(:read_timeout)
-
+    http.verify_mode = @options[:verify_mode] if @options.key?(:verify_mode)
+    
     request = yield(uri)
 
     request_headers.each do |key, value|
