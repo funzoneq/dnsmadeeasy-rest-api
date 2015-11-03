@@ -151,17 +151,47 @@ describe DnsMadeEasy do
 
   describe '#delete_records' do
     let(:response) { "{}" }
+    let(:domain) { 'something.wanelo.com' }
+    let(:domain_id) { 123 }
 
-    before do
-      subject.stub(:get_id_by_domain).with('something.wanelo.com').and_return(123)
+    context 'with an array of record ids' do
+      let(:ids) { [147, 159] }
+
+      before do
+        subject.stub(:get_id_by_domain).with(domain).and_return(domain_id)
+
+        stub_request(:delete, "https://api.dnsmadeeasy.com/V2.0/dns/managed/#{domain_id}/records?ids=#{ids.join(',')}").
+          with(headers: request_headers).
+          to_return(:status => 200, :body => response, :headers => {})
+      end
+
+      it 'deletes a list of records from a given domain' do
+        expect(subject.delete_records('something.wanelo.com', ids)).to eq({})
+      end
     end
 
-    it 'deletes a list of records from a given domain' do
-      stub_request(:delete, "https://api.dnsmadeeasy.com/V2.0/dns/managed/123/records/").
-        with(headers: request_headers, body: "[147,159]").
-        to_return(:status => 200, :body => response, :headers => {})
+    context 'with an empty array' do
+      it 'returns early without deleting anything' do
+        expect(subject.delete_records('something.wanelo.com', [])).to eq(nil)
+      end
+    end
+  end
 
-      expect(subject.delete_records('something.wanelo.com', [147, 159])).to eq({})
+  describe '#delete_all_records' do
+    let(:response) { "{}" }
+    let(:domain) { 'something.wanelo.com' }
+    let(:domain_id) { 123 }
+
+    before do
+      subject.stub(:get_id_by_domain).with(domain).and_return(domain_id)
+
+      stub_request(:delete, "https://api.dnsmadeeasy.com/V2.0/dns/managed/#{domain_id}/records").
+        with(headers: request_headers).
+        to_return(:status => 200, :body => response, :headers => {})
+    end
+
+    it 'deletes all records from the domain' do
+      expect(subject.delete_all_records('something.wanelo.com')).to eq({})
     end
   end
 
@@ -261,7 +291,7 @@ describe DnsMadeEasy do
         to_return(:status => 200, :body => response, :headers => {})
 
 
-      expect(subject.update_record('something.wanelo.com', 21, 'mail', 'A', '1.1.1.1', options = {})).to eq({})
+      expect(subject.update_record('something.wanelo.com', 21, 'mail', 'A', '1.1.1.1', {})).to eq({})
     end
   end
 
