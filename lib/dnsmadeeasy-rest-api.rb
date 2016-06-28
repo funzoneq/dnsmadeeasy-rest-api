@@ -4,13 +4,13 @@ require 'json'
 require 'uri'
 require 'net/http'
 
+# A class to interact with the DNSMadeEasy REST API v2.0
 class DnsMadeEasy
-
   attr_accessor :base_uri
 
-  def initialize (api_key, api_secret, sandbox = false, options = {})
-    raise "api_key is undefined" unless api_key
-    raise "api_secret is undefined" unless api_secret
+  def initialize(api_key, api_secret, sandbox = false, options = {})
+    fail 'api_key is undefined' unless api_key
+    fail 'api_secret is undefined' unless api_secret
 
     @api_key = api_key
     @api_secret = api_secret
@@ -67,8 +67,7 @@ class DnsMadeEasy
   def find_record_id(domain_name, name, type)
     records = records_for(domain_name)
 
-    records['data'].select { |r| r['name'] == name && r['type'] == type }
-                   .map    { |r| r['id'] }
+    records['data'].select { |r| r['name'] == name && r['type'] == type }.map { |r| r['id'] }
   end
 
   def delete_record(domain_name, record_id)
@@ -88,62 +87,62 @@ class DnsMadeEasy
   end
 
   def create_record(domain_name, name, type, value, options = {})
-    body = {"name" => name, "type" => type, "value" => value, "ttl" => 3600, "gtdLocation" => "DEFAULT"}
+    body = { 'name' => name, 'type' => type, 'value' => value, 'ttl' => 3600, 'gtdLocation' => 'DEFAULT' }
     post "/dns/managed/#{get_id_by_domain(domain_name)}/records/", body.merge(options)
   end
 
   def create_a_record(domain_name, name, value, options = {})
-    # todo: match IPv4 for value
-    create_record domain_name, name, "A", value, options
+    # TODO: match IPv4 for value
+    create_record domain_name, name, 'A', value, options
   end
 
   def create_aaaa_record(domain_name, name, value, options = {})
-    # todo: match IPv6 for value
-    create_record domain_name, name, "AAAA", value, options
+    # TODO: match IPv6 for value
+    create_record domain_name, name, 'AAAA', value, options
   end
 
   def create_ptr_record(domain_name, name, value, options = {})
-    # todo: match PTR value
-    create_record domain_name, name, "PTR", value, options
+    # TODO: match PTR value
+    create_record domain_name, name, 'PTR', value, options
   end
 
   def create_txt_record(domain_name, name, value, options = {})
-    # todo: match TXT value
-    create_record domain_name, name, "TXT", value, options
+    # TODO: match TXT value
+    create_record domain_name, name, 'TXT', value, options
   end
 
   def create_cname_record(domain_name, name, value, options = {})
-    # todo: match CNAME value
-    create_record domain_name, name, "CNAME", value, options
+    # TODO: match CNAME value
+    create_record domain_name, name, 'CNAME', value, options
   end
 
   def create_ns_record(domain_name, name, value, options = {})
-    # todo: match domainname for value
-    create_record domain_name, name, "NS", value, options
+    # TODO: match domainname for value
+    create_record domain_name, name, 'NS', value, options
   end
 
   def create_spf_record(domain_name, name, value, options = {})
-    create_record domain_name, name, "SPF", value, options
+    create_record domain_name, name, 'SPF', value, options
   end
 
   def create_mx_record(domain_name, name, priority, value, options = {})
-    options.merge!({"mxLevel" => priority})
+    options.merge!('mxLevel' => priority)
 
-    create_record domain_name, name, "MX", value, options
+    create_record domain_name, name, 'MX', value, options
   end
 
   def create_srv_record(domain_name, name, priority, weight, port, value, options = {})
-    options.merge!({"priority" => priority, "weight" => weight, "port" => port})
-    create_record domain_name, name, "SRV", value, options
+    options.merge!('priority' => priority, 'weight' => weight, 'port' => port)
+    create_record domain_name, name, 'SRV', value, options
   end
 
-  def create_httpred_record(domain_name, name, value, redirectType = "STANDARD - 302", description = "", keywords = "", title = "", options = {})
-    options.merge!({"redirectType" => redirectType, "description" => description, "keywords" => keywords, "title" => title})
-    create_record domain_name, name, "HTTPRED", value, options
+  def create_httpred_record(domain_name, name, value, redirectType = 'STANDARD - 302', description = '', keywords = '', title = '', options = {})
+    options.merge!('redirectType' => redirectType, 'description' => description, 'keywords' => keywords, 'title' => title)
+    create_record domain_name, name, 'HTTPRED', value, options
   end
 
   def update_record(domain, record_id, name, type, value, options = {})
-    body = { "name" => name, "type" => type, "value" => value, "ttl" => 3600, "gtdLocation" => "DEFAULT", "id" => record_id}
+    body = { 'name' => name, 'type' => type, 'value' => value, 'ttl' => 3600, 'gtdLocation' => 'DEFAULT', 'id' => record_id }
     put "/dns/managed/#{get_id_by_domain(domain)}/records/#{record_id}/", body.merge(options)
   end
 
@@ -196,7 +195,7 @@ class DnsMadeEasy
     response = http.request(request)
     response.value # raise Net::HTTPServerException unless response was 2xx
 
-    unparsed_json = response.body.to_s.empty? ? "{}" : response.body
+    unparsed_json = response.body.to_s.empty? ? '{}' : response.body
 
     JSON.parse(unparsed_json)
   end

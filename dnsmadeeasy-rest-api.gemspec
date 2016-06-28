@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name          = 'dnsmadeeasy-rest-api'
-  s.version       = '1.0.3'
+  s.version       = '1.0.4'
   s.authors       = ['Arnoud Vermeer', 'Paul Henry', 'James Hart']
   s.email         = ['a.vermeer@freshway.biz', 'ops@wanelo.com']
   s.license       = 'Apache'
@@ -12,4 +12,6 @@ Gem::Specification.new do |s|
 
   s.add_development_dependency 'rspec'
   s.add_development_dependency 'webmock'
+  s.add_development_dependency 'bundler'
+  s.add_development_dependency 'rubocop'
 end

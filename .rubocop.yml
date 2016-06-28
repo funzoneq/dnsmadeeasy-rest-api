@@ -1,0 +1,6 @@
+Metrics/LineLength:
+  Max: 300
+
+Style/SpaceBeforeFirstArg:
+    Exclude:
+        - '**/metadata.rb'
