@@ -31,7 +31,7 @@ api = DnsMadeEasy.new('awesome-api-key', 'super-secret-and-awesome-api-secret')
 
 All return values are the direct JSON responses from DNS Made Easy converted into a Hash.
 
-See: [http://www.dnsmadeeasy.com/wp-content/themes/appdev/pdf/API-Documentationv2.pdf](http://www.dnsmadeeasy.com/wp-content/themes/appdev/pdf/API-Documentationv2.pdf)
+See: [http://www.dnsmadeeasy.com/integration/pdf/API-Docv2.pdf](http://www.dnsmadeeasy.com/integration/pdf/API-Docv2.pdf)
 
 ### Managing Domains
 
