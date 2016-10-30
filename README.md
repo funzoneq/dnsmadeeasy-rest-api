@@ -144,7 +144,7 @@ api.requests_remaining
 
 To get the API request total limit after a call:
 ```ruby
-api.requests_limit
+api.request_limit
 ```
 >Information is not available until an API call has been made
 
