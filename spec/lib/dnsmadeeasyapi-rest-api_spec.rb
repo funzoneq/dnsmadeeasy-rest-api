@@ -14,7 +14,7 @@ describe DnsMadeEasy do
   subject { DnsMadeEasy.new(api_key, secret_key) }
 
   before do
-    Time.stub(:now).and_return(Time.parse('Wed, 21 May 2014 18:08:37 GMT'))
+    allow(Time).to receive(:now).and_return(Time.parse('Wed, 21 May 2014 18:08:37 GMT'))
   end
 
   describe '#get_id_by_domain' do
@@ -292,6 +292,45 @@ describe DnsMadeEasy do
 
 
       expect(subject.update_record('something.wanelo.com', 21, 'mail', 'A', '1.1.1.1', {})).to eq({})
+    end
+  end
+
+  describe '#update_records' do
+    let(:response) { '{}' }
+
+    before do
+      subject.stub(:get_id_by_domain).with('something.wanelo.com').and_return(123)
+    end
+
+    it 'updates a record' do
+      records = [
+        {
+          'id' => 21,
+          'name' => 'mail',
+          'type' => 'A',
+          'value' => '1.1.1.1',
+          'gtdLocation' => 'DEFAULT',
+          'ttl' => 300
+        },
+        {
+          'id' => 22,
+          'name' => 'post',
+          'type' => 'A',
+          'value' => '1.1.1.2',
+          'gtdLocation' => 'DEFAULT',
+          'ttl' => 300
+        }
+      ]
+
+      body = '[{"id":21,"name":"mail","type":"A","value":"1.1.1.1","gtdLocation":"DEFAULT","ttl":3600},{"id":22,"name":"post","type":"A","value":"1.1.1.2","gtdLocation":"DEFAULT","ttl":3600}]'
+
+
+      stub_request(:put, "https://api.dnsmadeeasy.com/V2.0/dns/managed/123/records/updateMulti/").
+        with(headers: request_headers, body: body).
+        to_return(status: 200, body: response, headers: {})
+
+
+      expect(subject.update_records('something.wanelo.com', records, { 'ttl' => 3600 })).to eq({})
     end
   end
 
