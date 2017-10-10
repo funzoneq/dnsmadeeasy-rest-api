@@ -183,6 +183,7 @@ class DnsMadeEasy
 
     http = Net::HTTP.new(uri.host, uri.port)
     http.use_ssl = true
+    http.verify_mode = OpenSSL::SSL::VERIFY_NONE if @options.key?(:ssl_verify_none)
     http.open_timeout = @options[:open_timeout] if @options.key?(:open_timeout)
     http.read_timeout = @options[:read_timeout] if @options.key?(:read_timeout)
 
