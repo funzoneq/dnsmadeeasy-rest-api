@@ -17,7 +17,7 @@ class DnsMadeEasy
     @options = options
 
     if sandbox
-      self.base_uri = 'https://api.sandbox.dnsmadeeasy.com/V2.0'
+      self.base_uri = 'https://sandboxapi.dnsmadeeasy.com/V2.0'
     else
       self.base_uri = 'https://api.dnsmadeeasy.com/V2.0'
     end
