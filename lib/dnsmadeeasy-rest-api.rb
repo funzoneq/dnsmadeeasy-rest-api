@@ -150,6 +150,20 @@ class DnsMadeEasy
     put "/dns/managed/#{get_id_by_domain(domain)}/records/#{record_id}/", body.merge(options)
   end
 
+  def update_records(domain, records, options = {})
+    body = records.map do |record|
+      {
+        'id' => record['id'],
+        'name' => record['name'],
+        'type' => record['type'],
+        'value' => record['value'],
+        'gtdLocation' => record['gtdLocation'],
+        'ttl' => record['ttl']
+      }.merge(options)
+    end
+    put "/dns/managed/#{get_id_by_domain(domain)}/records/updateMulti/", body
+  end
+
   private
 
   def get(path)
