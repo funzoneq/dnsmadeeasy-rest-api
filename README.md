@@ -134,6 +134,21 @@ To update a record:
 api.update_record('hello.example.com', 123, 'woah', 'A', '127.0.1.1', { 'ttl' => '60' })
 ```
 
+To get the number of API requests remaining after a call:
+
+```ruby
+api.requests_remaining
+```
+>Information is not available until an API call has been made
+
+
+To get the API request total limit after a call:
+```ruby
+api.request_limit
+```
+>Information is not available until an API call has been made
+
+
 ## Contributing
 
 1. Fork it
