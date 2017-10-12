@@ -7,6 +7,8 @@ require 'net/http'
 # A class to interact with the DNSMadeEasy REST API v2.0
 class DnsMadeEasy
   attr_accessor :base_uri
+  attr_reader :requests_remaining
+  attr_reader :request_limit
 
   def initialize(api_key, api_secret, sandbox = false, options = {})
     fail 'api_key is undefined' unless api_key
@@ -15,6 +17,8 @@ class DnsMadeEasy
     @api_key = api_key
     @api_secret = api_secret
     @options = options
+    @requests_remaining = -1
+    @request_limit = -1
 
     if sandbox
       self.base_uri = 'https://api.sandbox.dnsmadeeasy.com/V2.0'
@@ -208,6 +212,11 @@ class DnsMadeEasy
 
     response = http.request(request)
     response.value # raise Net::HTTPServerException unless response was 2xx
+
+    response.each_header do |header, value|
+      @requests_remaining = value.to_i if header == 'x-dnsme-requestsremaining'
+      @request_limit = value.to_i if header == 'x-dnsme-requestlimit'
+    end
 
     unparsed_json = response.body.to_s.empty? ? '{}' : response.body
 
