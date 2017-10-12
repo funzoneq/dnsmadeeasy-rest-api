@@ -21,7 +21,7 @@ class DnsMadeEasy
     @request_limit = -1
 
     if sandbox
-      self.base_uri = 'https://api.sandbox.dnsmadeeasy.com/V2.0'
+      self.base_uri = 'https://sandboxapi.dnsmadeeasy.com/V2.0'
     else
       self.base_uri = 'https://api.dnsmadeeasy.com/V2.0'
     end
@@ -201,6 +201,7 @@ class DnsMadeEasy
 
     http = Net::HTTP.new(uri.host, uri.port)
     http.use_ssl = true
+    http.verify_mode = OpenSSL::SSL::VERIFY_NONE if @options.key?(:ssl_verify_none)
     http.open_timeout = @options[:open_timeout] if @options.key?(:open_timeout)
     http.read_timeout = @options[:read_timeout] if @options.key?(:read_timeout)
 
