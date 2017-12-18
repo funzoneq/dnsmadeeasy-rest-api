@@ -164,6 +164,47 @@ class DnsMadeEasy
     put "/dns/managed/#{get_id_by_domain(domain)}/records/updateMulti/", body
   end
 
+  # -----------------------------------
+  # ------------- FAILOVER -------------
+  # -----------------------------------
+
+  def get_failover_config(record_id)
+    get "/monitor/#{record_id}"
+  end
+
+  def update_failover_config(record_id, ips, desc, port=80, protocol='TCP', custom_monitor_config = {}, sensitivity=5, failover=true, auto_failover=false, monitor=false, max_emails=1, source=1)
+    protocolIds = {
+      'TCP' => 1,
+      'UDP' => 2,
+      'HTTP' => 3,
+      'DNS' => 4,
+      'HTTPS' => 6
+    }
+
+    body = {
+      'port' => port,
+      'protocolId' => protocolIds[protocol],
+      'systemDescription' => desc,
+      'sensitivity' => sensitivity,
+      'failover' => failover,
+      'monitor' => monitor,
+      'maxEmails' => max_emails,
+      'autoFailover' => auto_failover,
+      'source' => source
+    }
+
+    body = body.merge(custom_monitor_config)
+
+    ip_config = {}
+    (0.. ips.length-1).each do |idx|
+      ip_config["ip#{idx+1}"] = ips[idx]
+    end
+
+    body = body.merge(ip_config)
+
+    put "/monitor/#{record_id}", body
+  end
+
   private
 
   def get(path)
