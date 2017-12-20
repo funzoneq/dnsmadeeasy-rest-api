@@ -172,7 +172,7 @@ class DnsMadeEasy
     get "/monitor/#{record_id}"
   end
 
-  def update_failover_config(record_id, ips, desc, port=80, protocol='TCP', custom_monitor_config = {}, sensitivity=5, failover=true, auto_failover=false, monitor=false, max_emails=1, source=1)
+  def update_failover_config(record_id, ips, desc, port=80, protocol='TCP', custom_monitor_config = {}, sensitivity=3, failover=true, auto_failover=false, monitor=false, max_emails=1, source=1)
     protocolIds = {
       'TCP' => 1,
       'UDP' => 2,
@@ -203,6 +203,10 @@ class DnsMadeEasy
     body = body.merge(ip_config)
 
     put "/monitor/#{record_id}", body
+  end
+
+  def disable_failover(record_id)
+    put "/monitor/#{record_id}", { 'failover' => false, 'monitor' => false }
   end
 
   private
