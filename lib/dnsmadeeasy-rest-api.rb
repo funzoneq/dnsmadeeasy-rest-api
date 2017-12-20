@@ -172,28 +172,29 @@ class DnsMadeEasy
     get "/monitor/#{record_id}"
   end
 
-  def update_failover_config(record_id, ips, desc, port=80, protocol='TCP', custom_monitor_config = {}, sensitivity=3, failover=true, auto_failover=false, monitor=false, max_emails=1, source=1)
+  def update_failover_config(record_id, ips, desc, protocol='TCP', options = {})
     protocolIds = {
       'TCP' => 1,
       'UDP' => 2,
       'HTTP' => 3,
       'DNS' => 4,
+      'SMTP' => 5,
       'HTTPS' => 6
     }
 
     body = {
-      'port' => port,
       'protocolId' => protocolIds[protocol],
+      'port' => 80,
       'systemDescription' => desc,
-      'sensitivity' => sensitivity,
-      'failover' => failover,
-      'monitor' => monitor,
-      'maxEmails' => max_emails,
-      'autoFailover' => auto_failover,
-      'source' => source
+      'sensitivity' => 5,
+      'failover' => true,
+      'monitor' => false,
+      'maxEmails' => 1,
+      'autoFailover' => false,
+      'source' => 1
     }
 
-    body = body.merge(custom_monitor_config)
+    body = body.merge(options)
 
     ip_config = {}
     (0.. ips.length-1).each do |idx|
@@ -202,6 +203,7 @@ class DnsMadeEasy
 
     body = body.merge(ip_config)
 
+    puts body.inspect
     put "/monitor/#{record_id}", body
   end
 
