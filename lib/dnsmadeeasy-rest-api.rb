@@ -203,7 +203,6 @@ class DnsMadeEasy
 
     body = body.merge(ip_config)
 
-    puts body.inspect
     put "/monitor/#{record_id}", body
   end
 
