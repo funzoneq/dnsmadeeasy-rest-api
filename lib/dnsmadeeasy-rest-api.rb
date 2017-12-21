@@ -31,20 +31,20 @@ class DnsMadeEasy
   # ------------- DOMAINS -------------
   # -----------------------------------
 
-  def get_id_by_domain(domain_name)
-    get("/dns/managed/id/#{domain_name}")['id']
+  def get_id_by_domain(domain_name, domain_id=-1)
+    domain_id < 0 ? get("/dns/managed/id/#{domain_name}")['id'] : domain_id
   end
 
   def domains
     get '/dns/managed/'
   end
 
-  def domain(domain_name)
-    get "/dns/managed/#{get_id_by_domain(domain_name)}"
+  def domain(domain_name, domain_id = -1)
+    get "/dns/managed/#{get_id_by_domain(domain_name, domain_id)}"
   end
 
-  def delete_domain(domain_name)
-    delete "/dns/managed/#{get_id_by_domain(domain_name)}"
+  def delete_domain(domain_name, domain_id=-1)
+    delete "/dns/managed/#{get_id_by_domain(domain_name, domain_id)}"
   end
 
   def create_domains(names)
@@ -59,8 +59,8 @@ class DnsMadeEasy
   # ------------- RECORDS -------------
   # -----------------------------------
 
-  def records_for(domain_name)
-    get "/dns/managed/#{get_id_by_domain(domain_name)}/records"
+  def records_for(domain_name, domain_id=-1)
+    get "/dns/managed/#{get_id_by_domain(domain_name, domain_id)}/records"
   end
 
   def find(domain_name, name, type)
@@ -74,25 +74,25 @@ class DnsMadeEasy
     records['data'].select { |r| r['name'] == name && r['type'] == type }.map { |r| r['id'] }
   end
 
-  def delete_record(domain_name, record_id)
-    delete "/dns/managed/#{get_id_by_domain(domain_name)}/records/#{record_id}/"
+  def delete_record(domain_name, record_id, domain_id=-1)
+    delete "/dns/managed/#{get_id_by_domain(domain_name, domain_id)}/records/#{record_id}/"
   end
 
-  def delete_records(domain_name, ids = [])
+  def delete_records(domain_name, ids = [], domain_id=-1)
     return if ids.empty?
-    domain_id = get_id_by_domain(domain_name)
+    domain_id = get_id_by_domain(domain_name, domain_id)
 
     delete "/dns/managed/#{domain_id}/records?ids=#{ids.join(',')}"
   end
 
-  def delete_all_records(domain_name)
-    domain_id = get_id_by_domain(domain_name)
+  def delete_all_records(domain_name, domain_id=-1)
+    domain_id = get_id_by_domain(domain_name, domain_id)
     delete "/dns/managed/#{domain_id}/records"
   end
 
-  def create_record(domain_name, name, type, value, options = {})
+  def create_record(domain_name, name, type, value, options = {}, domain_id=-1)
     body = { 'name' => name, 'type' => type, 'value' => value, 'ttl' => 3600, 'gtdLocation' => 'DEFAULT' }
-    post "/dns/managed/#{get_id_by_domain(domain_name)}/records/", body.merge(options)
+    post "/dns/managed/#{get_id_by_domain(domain_name, domain_id)}/records/", body.merge(options)
   end
 
   def create_a_record(domain_name, name, value, options = {})
@@ -145,12 +145,12 @@ class DnsMadeEasy
     create_record domain_name, name, 'HTTPRED', value, options
   end
 
-  def update_record(domain, record_id, name, type, value, options = {})
+  def update_record(domain, record_id, name, type, value, options = {}, domain_id=-1)
     body = { 'name' => name, 'type' => type, 'value' => value, 'ttl' => 3600, 'gtdLocation' => 'DEFAULT', 'id' => record_id }
-    put "/dns/managed/#{get_id_by_domain(domain)}/records/#{record_id}/", body.merge(options)
+    put "/dns/managed/#{get_id_by_domain(domain, domain_id)}/records/#{record_id}/", body.merge(options)
   end
 
-  def update_records(domain, records, options = {})
+  def update_records(domain, records, options = {}, domain_id=-1)
     body = records.map do |record|
       {
         'id' => record['id'],
@@ -161,12 +161,59 @@ class DnsMadeEasy
         'ttl' => record['ttl']
       }.merge(options)
     end
-    put "/dns/managed/#{get_id_by_domain(domain)}/records/updateMulti/", body
+    put "/dns/managed/#{get_id_by_domain(domain, domain_id)}/records/updateMulti/", body
+  end
+
+  # -----------------------------------
+  # ------------- FAILOVER -------------
+  # -----------------------------------
+
+  def get_failover_config(record_id)
+    get "/monitor/#{record_id}"
+  end
+
+  def update_failover_config(record_id, ips, desc, protocol='TCP', options = {})
+    protocolIds = {
+      'TCP' => 1,
+      'UDP' => 2,
+      'HTTP' => 3,
+      'DNS' => 4,
+      'SMTP' => 5,
+      'HTTPS' => 6
+    }
+
+    body = {
+      'protocolId' => protocolIds[protocol],
+      'port' => 80,
+      'systemDescription' => desc,
+      'sensitivity' => 5,
+      'failover' => true,
+      'monitor' => false,
+      'maxEmails' => 1,
+      'autoFailover' => false,
+      'source' => 1
+    }
+
+    body = body.merge(options)
+
+    ip_config = {}
+    (0.. ips.length-1).each do |idx|
+      ip_config["ip#{idx+1}"] = ips[idx]
+    end
+
+    body = body.merge(ip_config)
+
+    put "/monitor/#{record_id}", body
+  end
+
+  def disable_failover(record_id)
+    put "/monitor/#{record_id}", { 'failover' => false, 'monitor' => false }
   end
 
   private
 
   def get(path)
+    puts "making request to #{path}"
     request(path) do |uri|
       Net::HTTP::Get.new(uri)
     end
