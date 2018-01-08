@@ -334,6 +334,92 @@ describe DnsMadeEasy do
     end
   end
 
+  describe '#get_failover_config' do
+    let(:response) do
+      '{
+      "port":80,
+      "source":1,
+      "failover":true,
+      "ip1":"1.1.1.1",
+      "ip2":"2.2.2.2",
+      "protocolId":3,
+      "sourceId":104620,
+      "monitor":true,
+      "sensitivity":5,
+      "systemDescription":"Test",
+      "maxEmails":1,
+      "ip1Failed":0,
+      "ip2Failed":0,
+      "ip3Failed":0,
+      "ip4Failed":0,
+      "ip5Failed":0,
+      "recordId":21,
+      "autoFailover":false
+      }'
+    end
+
+    it 'gets the failover config for a failover enabled record' do
+      stub_request(:get, "https://api.dnsmadeeasy.com/V2.0/monitor/21").
+        with(headers: request_headers).
+        to_return(status: 200, body: response, headers: {})
+
+      expect(subject.get_failover_config(21)).to eq({
+        'port' => 80,
+        'source' => 1,
+        'failover' => true,
+        'ip1' => '1.1.1.1',
+        'ip2' => '2.2.2.2',
+        'protocolId' => 3,
+        'sourceId' => 104620,
+        'monitor' => true,
+        'sensitivity' => 5,
+        'systemDescription' => 'Test',
+        'maxEmails' => 1,
+        'ip1Failed' => 0,
+        'ip2Failed' => 0,
+        'ip3Failed' => 0,
+        'ip4Failed' => 0,
+        'ip5Failed' => 0,
+        'recordId' => 21,
+        'autoFailover' => false
+        })
+    end
+  end
+
+  describe '#disable_failover' do
+    let(:response) { "{}" }
+    let(:body) { '{"failover":false,"monitor":false}' }
+
+    it 'disables the failover config for a failover enabled record' do
+      stub_request(:put, "https://api.dnsmadeeasy.com/V2.0/monitor/21").
+        with(headers: request_headers, body: body).
+        to_return(status: 200, body: response, headers: {})
+
+      expect(subject.disable_failover(21)).to eq({})
+    end
+  end
+
+  describe '#update_failover_config' do
+    let(:response) { "{}" }
+    let(:body) do
+      '{"protocolId":3,"port":80,"systemDescription":"Test","sensitivity":3,"failover":true,"monitor":false,"maxEmails":1,"autoFailover":false,"source":1,"httpFqdn":"example.com","httpFile":"/magic","httpQueryString":"more-magic","ip1":"1.1.1.1","ip2":"2.2.2.2"}'
+    end
+
+    it "updates the failover config" do
+      stub_request(:put, "https://api.dnsmadeeasy.com/V2.0/monitor/21").
+        with(headers: request_headers, body: body).
+        to_return(status: 200, body: response, headers: {})
+
+      expect(subject.update_failover_config(21, ['1.1.1.1', '2.2.2.2'], 'Test', 'HTTP', {
+        'port' => 80,
+        'httpFqdn' => 'example.com',
+        'httpFile' => '/magic',
+        'httpQueryString' => 'more-magic',
+        'sensitivity' => 3
+      })).to eq({})
+    end
+  end
+
   describe "#request" do
     before do
       stub_request(:get, "https://api.dnsmadeeasy.com/V2.0/some_path").
