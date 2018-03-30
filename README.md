@@ -29,6 +29,12 @@ Start by creating a new instance of the `DnsMadeEasy` class, and passing your ap
 api = DnsMadeEasy.new('awesome-api-key', 'super-secret-and-awesome-api-secret')
 ```
 
+Optionally, you can connect to the sandbox API if you want to play around.
+
+```ruby
+api = DnsMadeEasy.new('awesome-api-key', 'super-secret-and-awesome-api-secret', sandbox=TRUE)
+```
+
 All return values are the direct JSON responses from DNS Made Easy converted into a Hash.
 
 See: [https://api-docs.dnsmadeeasy.com/](https://api-docs.dnsmadeeasy.com/)
