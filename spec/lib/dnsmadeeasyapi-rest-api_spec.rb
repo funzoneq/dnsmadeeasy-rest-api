@@ -388,7 +388,7 @@ describe DnsMadeEasy do
 
   describe '#disable_failover' do
     let(:response) { "{}" }
-    let(:body) { '{"failover":false,"monitor":false}' }
+    let(:body) { '{"failover":false,"monitor":false,"port":81,"sensitivity":5}' }
 
     it 'disables the failover config for a failover enabled record' do
       stub_request(:put, "https://api.dnsmadeeasy.com/V2.0/monitor/21").

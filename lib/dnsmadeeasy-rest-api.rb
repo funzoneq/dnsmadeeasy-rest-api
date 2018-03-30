@@ -207,7 +207,7 @@ class DnsMadeEasy
   end
 
   def disable_failover(record_id)
-    put "/monitor/#{record_id}", { 'failover' => false, 'monitor' => false }
+    put "/monitor/#{record_id}", { 'failover' => false, 'monitor' => false, 'port' => 81, 'sensitivity' => 5 }
   end
 
   private
