@@ -388,14 +388,14 @@ describe DnsMadeEasy do
 
   describe '#disable_failover' do
     let(:response) { "{}" }
-    let(:body) { '{"failover":false,"monitor":false}' }
+    let(:body) { '{"failover":false,"monitor":false,"port":80,"sensitivity":5}' }
 
     it 'disables the failover config for a failover enabled record' do
       stub_request(:put, "https://api.dnsmadeeasy.com/V2.0/monitor/21").
         with(headers: request_headers, body: body).
         to_return(status: 200, body: response, headers: {})
 
-      expect(subject.disable_failover(21)).to eq({})
+      expect(subject.disable_failover(21, { 'port' => 80, 'sensitivity' => 5 })).to eq({})
     end
   end
 

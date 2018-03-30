@@ -206,8 +206,8 @@ class DnsMadeEasy
     put "/monitor/#{record_id}", body
   end
 
-  def disable_failover(record_id)
-    put "/monitor/#{record_id}", { 'failover' => false, 'monitor' => false }
+  def disable_failover(record_id, options={})
+    put "/monitor/#{record_id}", { 'failover' => false, 'monitor' => false }.merge(options)
   end
 
   private
