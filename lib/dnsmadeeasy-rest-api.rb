@@ -56,6 +56,54 @@ class DnsMadeEasy
   end
 
   # -----------------------------------
+  # -------- SECONDARY DOMAINS --------
+  # -----------------------------------
+
+  def secondary
+    get '/dns/secondary'
+  end
+
+  def secondary(id)
+    get "/dns/secondary/#{id}"
+  end
+
+  def update_secondary(ids = [], ipSetId)
+    put('/dns/secondary/', 'ids' => ids, 'ipSetId' => ipSetId)
+  end
+
+  def create_secondary(names = [], ipSetId)
+    post('/dns/secondary/', "names": names, 'ipSetId' => ipSetId)
+  end
+
+  def delete_secondary(id)
+    delete("/dns/secondary/#{id}")
+  end
+
+  # -----------------------------------
+  # ------------- IP SETS -------------
+  # -----------------------------------
+
+  def ip_set
+    get '/dns/secondary/ipSet'
+  end
+
+  def ip_set(id)
+    get "/dns/secondary/ipSet/#{id}"
+  end
+
+  def update_ip_set(id, name, ips = [])
+    put("/dns/secondary/ipSet/#{id}", 'name' => name, 'id' => id, 'ips' => ips)
+  end
+
+  def create_ip_set(name, ips = [])
+    post('/dns/secondary/ipSet', 'name' => name, 'ips' => ips)
+  end
+
+  def delete_ip_set(id)
+    delete("/dns/secondary/ipSet/#{id}")
+  end
+
+  # -----------------------------------
   # ------------- RECORDS -------------
   # -----------------------------------
 
