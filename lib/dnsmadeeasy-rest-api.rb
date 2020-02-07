@@ -85,7 +85,7 @@ class DnsMadeEasy
   # ------------- IP SETS -------------
   # -----------------------------------
 
-  def ip_set
+  def ip_sets
     get '/dns/secondary/ipSet'
   end
 
