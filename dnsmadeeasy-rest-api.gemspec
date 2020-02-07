@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Gem::Specification.new do |s|
   s.name          = 'dnsmadeeasy-rest-api'
   s.version       = '1.0.9'
@@ -10,8 +12,8 @@ Gem::Specification.new do |s|
 
   s.files         = `git ls-files`.split("\n")
 
-  s.add_development_dependency 'rspec'
-  s.add_development_dependency 'webmock'
   s.add_development_dependency 'bundler'
+  s.add_development_dependency 'rspec'
   s.add_development_dependency 'rubocop'
+  s.add_development_dependency 'webmock'
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'time'
 require 'openssl'
 require 'json'
@@ -11,8 +13,8 @@ class DnsMadeEasy
   attr_reader :request_limit
 
   def initialize(api_key, api_secret, sandbox = false, options = {})
-    fail 'api_key is undefined' unless api_key
-    fail 'api_secret is undefined' unless api_secret
+    raise 'api_key is undefined' unless api_key
+    raise 'api_secret is undefined' unless api_secret
 
     @api_key = api_key
     @api_secret = api_secret
@@ -20,11 +22,11 @@ class DnsMadeEasy
     @requests_remaining = -1
     @request_limit = -1
 
-    if sandbox
-      self.base_uri = 'https://api.sandbox.dnsmadeeasy.com/V2.0'
-    else
-      self.base_uri = 'https://api.dnsmadeeasy.com/V2.0'
-    end
+    self.base_uri = if sandbox
+                      'https://api.sandbox.dnsmadeeasy.com/V2.0'
+                    else
+                      'https://api.dnsmadeeasy.com/V2.0'
+                    end
   end
 
   # -----------------------------------
@@ -59,7 +61,7 @@ class DnsMadeEasy
   # -------- SECONDARY DOMAINS --------
   # -----------------------------------
 
-  def secondary
+  def secondarys
     get '/dns/secondary'
   end
 
@@ -128,6 +130,7 @@ class DnsMadeEasy
 
   def delete_records(domain_name, ids = [])
     return if ids.empty?
+
     domain_id = get_id_by_domain(domain_name)
 
     delete "/dns/managed/#{domain_id}/records?ids=#{ids.join(',')}"
@@ -220,7 +223,7 @@ class DnsMadeEasy
     get "/monitor/#{record_id}"
   end
 
-  def update_failover_config(record_id, ips, desc, protocol='TCP', options = {})
+  def update_failover_config(record_id, ips, desc, protocol = 'TCP', options = {})
     protocolIds = {
       'TCP' => 1,
       'UDP' => 2,
@@ -245,8 +248,8 @@ class DnsMadeEasy
     body = body.merge(options)
 
     ip_config = {}
-    (0.. ips.length-1).each do |idx|
-      ip_config["ip#{idx+1}"] = ips[idx]
+    (0..ips.length - 1).each do |idx|
+      ip_config["ip#{idx + 1}"] = ips[idx]
     end
 
     body = body.merge(ip_config)
@@ -254,7 +257,7 @@ class DnsMadeEasy
     put "/monitor/#{record_id}", body
   end
 
-  def disable_failover(record_id, options={})
+  def disable_failover(record_id, options = {})
     put "/monitor/#{record_id}", { 'failover' => false, 'monitor' => false }.merge(options)
   end
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'bundler/gem_tasks'
 require 'rspec/core/rake_task'
 require 'rubocop/rake_task'
@@ -19,4 +21,4 @@ end
 
 # The default rake task should just run it all
 desc 'Run all tests'
-task default: %w(style unit)
+task default: %w[style unit]
